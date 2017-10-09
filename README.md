@@ -23,6 +23,7 @@ VPLEX: maybe also a lead on how to proceed via https://community.emc.com/thread/
 
 VMAX: looking to leverage work by Craig Smith and Vijay Kumar
 VNX/Unity: ?
+
 XtremIO: reference https://kodywilson.com/2016/11/07/infrastructure-metrics-with-grafana-and-influxdb/
 
 
@@ -43,6 +44,7 @@ $ docker-compose up -d
 ```
 
 docker-compose.yml will pull existing images for collectd, influxdb and grafana from docker hub:
+
 https://hub.docker.com/r/fr3nd/collectd/
 
 https://hub.docker.com/_/influxdb/
@@ -57,7 +59,11 @@ The influxdb.conf config file is also generic, the only change is to enable coll
 The types.db file defines the collectd data source and influxdb needs it.
 
 After running docker-compose, you can access:
+
 The influxdb web admin page at http://localhost:8083
+
 Grafana at http://localhost:3000 (login with default admin/admin)
+
+
 
 
