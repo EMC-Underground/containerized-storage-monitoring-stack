@@ -21,8 +21,9 @@ Isilon: via Insights connector - https://github.com/Isilon/isilon_data_insights_
 
 VPLEX: maybe also a lead on how to proceed via https://community.emc.com/thread/239953?start=0&tstart=0
 
-VMAX: looking to leverage work by Craig Smith and Vijay Kumar
-VNX/Unity: ?
+VMAX: looking to leverage work by Vijay Kumar at Expedia
+
+VNX/Unity: Not sure what is available
 
 XtremIO: reference https://kodywilson.com/2016/11/07/infrastructure-metrics-with-grafana-and-influxdb/
 
