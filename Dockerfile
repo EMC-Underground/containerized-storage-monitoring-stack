@@ -6,4 +6,5 @@ RUN pip install collectd requests configargparse
 ADD collect-ecs.py /usr/bin/
 RUN chmod +x /usr/bin/collect-ecs.py
 ADD emcecs-config.yml /usr/share/collectd/emcecs-config.yml
+CMD exec collectd -f
 
