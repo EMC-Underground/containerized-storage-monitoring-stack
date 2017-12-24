@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/EMC-Underground/containerized-storage-monitoring-stack#readme",
   "dependencies": {
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "xml2js": "^0.4.19",
+    "yamljs": "^0.3.0"
   }
 }

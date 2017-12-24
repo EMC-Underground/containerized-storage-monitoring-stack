@@ -1,4 +1,3 @@
 ip: 10.4.44.4
-token: BAAcN0ZVSWxmRDJwTlNPWUpOTGh0c1lYR1kzWUdvPQMAjAQASHVybjpzdG9yYWdlb3M6VmlydHVhbERhdGFDZW50ZXJEYXRhOmM2ZjZmY2JjLWUwNDUtNDJlZC1hZDlmLWY2NTBjNTViMzM3NgIADTE1MTM5MTIwMjMwNTMDAC51cm46VG9rZW46ZGRkMTJkZDctYTI3NC00ZjI1LTkwYzktNTlmNWNhZjZjOTM0AgAC0A8=
-storagepool: urn:storageos:VirtualArray:36453c8c-6927-4729-916d-dbdcf93885b4
-replgroup: Replication_Group:urn:storageos:ReplicationGroupInfo:8d618c50-9bb5-4d2c-98f3-54537dd81666:global
+login: root
+pwd: Password#1
