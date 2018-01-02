@@ -12,16 +12,35 @@ if (ECSconfig.token == null) {
 	getECSConfig(function(ECSconfigData) {
 		ECSconfig = ECSconfigData;
 		getECSStats(function(stats) {
-			try {
-				console.log('diskSpaceTotalCurrent = ' + stats.diskSpaceTotalCurrent)
-				console.log('numNodes = ' + stats.numNodes)
-				console.log('numGoodNodes = ' + stats.numGoodNodes)
-				console.log('numBadNodes = ' + stats.numBadNodes)
-			}
-			catch(e) {
-				console.log('missing stat:')
-				console.log(e)
-			}	
+
+				// console.log('numNodes = ' + stats.numNodes)
+				// console.log('numGoodNodes = ' + stats.numGoodNodes)
+				// console.log('numBadNodes = ' + stats.numBadNodes)
+				// console.log('nodeMemoryUtilizationAvgCurrent = ' + stats.nodeMemoryUtilizationAvgCurrent)
+				// console.log('nodeCpuUtilizationAvgCurrent = ' + stats.nodeCpuUtilizationAvgCurrent)
+				// console.log('numDisks = ' + stats.numDisks)
+				// console.log('numGoodDisks = ' + stats.numGoodDisks)
+				// console.log('numBadDisks = ' + stats.numBadDisks)
+				// console.log('diskSpaceTotalCurrent = ' + stats.diskSpaceTotalCurrent)
+				// console.log('diskSpaceFreeCurrent = ' + stats.diskSpaceFreeCurrent)
+				// console.log('diskSpaceAllocatedCurrent = ' + stats.diskSpaceAllocatedCurrent)
+				// console.log('transactionErrorsCurrent = ' + stats.transactionErrorsCurrent)
+				// console.log('transactionReadLatencyCurrent = ' + stats.transactionReadLatencyCurrent)
+				// console.log('transactionWriteLatencyCurrent = ' + stats.transactionWriteLatencyCurrent)
+				// console.log('nodeNicUtilizationAvgCurrent = ' + stats.nodeNicUtilizationAvgCurrent)
+				// console.log('nodeNicBandwidthAvgCurrent = ' + stats.nodeNicBandwidthAvgCurrent)
+				// console.log('nodeNicReceivedBandwidthAvgCurrent = ' + stats.nodeNicReceivedBandwidthAvgCurrent)
+				// console.log('nodeNicTransmittedBandwidthAvgCurrent = ' + stats.nodeNicTransmittedBandwidthAvgCurrent)
+				// console.log('diskReadBandwidthTotalCurrent = ' + stats.diskReadBandwidthTotalCurrent)
+				// console.log('diskWriteBandwidthTotalCurrent = ' + stats.diskWriteBandwidthTotalCurrent)
+				// console.log('diskReadBandwidthGeoCurrent = ' + stats.diskReadBandwidthGeoCurrent)
+				// console.log('diskWriteBandwidthGeoCurrent = ' + stats.diskWriteBandwidthGeoCurrent)
+				// console.log('recoveryRateCurrent = ' + stats.recoveryRateCurrent)
+				// console.log('diskReadBandwidthRecoveryCurrent = ' + stats.diskReadBandwidthRecoveryCurrent)
+				// console.log('diskWriteBandwidthRecoveryCurrent = ' + stats.diskWriteBandwidthRecoveryCurrent)
+				// console.log('replicationEgressTrafficCurrent = ' + stats.replicationEgressTrafficCurrent)
+				// console.log('replicationIngressTrafficCurrent = ' + stats.replicationIngressTrafficCurrent)
+
 		})	
 	})
 } else {
@@ -59,10 +78,103 @@ function getECSStats (callback) {
 				var stats = JSON.parse(body)
 				// console.log('stats = ')
 				// console.log(stats)
-				stats['numNodes'] != null ? ECSstats.numNodes = stats['numNodes'] : void 0
-				stats['numGoodNodes'] != null ? ECSstats.numGoodNodes = stats['numGoodNodes'] : void 0
-				stats['numBadNodes'] != null ? ECSstats.numBadNodes = stats['numBadNodes'] : void 0
-				stats['diskSpaceTotalCurrent'][0]['Space'] != null ? ECSstats.diskSpaceTotalCurrent = stats['diskSpaceTotalCurrent'][0]['Space'] : void 0
+
+				var metrics = [
+					{stat: 'numNodes', source: "stats['numNodes']", dashboardLocation: 'emcecs/nodes/gauge-numNodes', value: null},
+					{stat: 'numGoodNodes', source: "stats['numGoodNodes']", dashboardLocation: 'emcecs/nodes/gauge-numGoodNodes', value: null},
+					{stat: 'numBadNodes', source: "stats['numBadNodes']", dashboardLocation: 'emcecs/nodes/gauge-numBadNodes', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'numDisks', source: "stats['numDisks']", dashboardLocation: 'emcecs/disks/gauge-numDisks', value: null},
+					{stat: 'numGoodDisks', source: "stats['numGoodDisks']", dashboardLocation: 'emcecs/disks/gauge-numGoodDisks', value: null},
+					{stat: 'numBadDisks', source: "stats['numBadDisks']", dashboardLocation: 'emcecs/disks/gauge-numBadDisks', value: null},					
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'nodeMemoryUtilizationAvgCurrent', source: "stats['nodeMemoryUtilizationAvgCurrent'][0]['Percent']", dashboardLocation: 'emcecs/nodes/gauge-nodeMemoryUtilizationAvgCurrent', value: null},
+					{stat: 'nodeCpuUtilizationAvgCurrent', source: "['nodeCpuUtilizationAvgCurrent'[0]['Percent']", dashboardLocation: 'emcecs/nodes/gauge-nodeCpuUtilizationAvgCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'diskSpaceTotalCurrent', source: "stats['diskSpaceTotalCurrent'][0]['Space']/1024/1024/1024", dashboardLocation: 'emcecs/space/gauge-diskSpaceTotalCurrent', value: null},
+					{stat: 'diskSpaceFreeCurrent', source: "stats['diskSpaceFreeCurrent'][0]['Space']/1024/1024/1024", dashboardLocation: 'emcecs/space/gauge-diskSpaceFreeCurrent', value: null},
+					{stat: 'diskSpaceAllocatedCurrent', source: "stats['diskSpaceAllocatedCurrent'][0]['Space']/1024/1024/1024", dashboardLocation: 'emcecs/space/gauge-diskSpaceAllocatedCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'transactionErrorsCurrent', source: "stats['transactionErrorsCurrent']['all'][0]['Rate']", dashboardLocation: 'emcecs/transactions/gauge-transactionErrorsCurrent', value: null},
+					{stat: 'transactionReadLatencyCurrent', source: "stats['transactionReadLatencyCurrent'][0]['Latency']", dashboardLocation: 'emcecs/transactions/gauge-transactionReadLatencyCurrent', value: null},
+					{stat: 'transactionWriteLatencyCurrent', source: "stats['transactionWriteLatencyCurrent'][0]['Latency']", dashboardLocation: 'emcecs/transactions/gauge-transactionWriteLatencyCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'nodeNicUtilizationAvgCurrent', source: "stats['nodeNicUtilizationAvgCurrent'][0]['Percent']", dashboardLocation: 'emcecs/nodes/gauge-nodeNicUtilizationAvgCurrent', value: null},
+					{stat: 'nodeNicBandwidthAvgCurrent', source: "stats['nodeNicBandwidthAvgCurrent'][0]['Bandwidth']", dashboardLocation: 'emcecs/bandwidth/gauge-nodeNicBandwidthAvgCurrent', value: null},
+					{stat: 'nodeNicReceivedBandwidthAvgCurrent', source: "stats['nodeNicReceivedBandwidthAvgCurrent'][0]['Bandwidth']", dashboardLocation: 'emcecs/bandwidth/gauge-nodeNicReceivedBandwidthAvgCurrent', value: null},
+					{stat: 'nodeNicTransmittedBandwidthAvgCurrent', source: "stats['nodeNicTransmittedBandwidthAvgCurrent'][0]['Bandwidth']", dashboardLocation: 'emcecs/bandwidth/gauge-nodeNicTransmittedBandwidthAvgCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'recoveryRate', source: "stats['recoveryRate'][0]['Rate']", dashboardLocation: 'emcecs/bandwidth/gauge-recoveryRate', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'replicationEgressTrafficCurrent', source: "stats['replicationEgressTrafficCurrent'][0]['Bandwidth']", dashboardLocation: 'emcecs/traffic/gauge-replicationEgressTrafficCurrent', value: null},
+					{stat: 'replicationIngressTrafficCurrent', source: "stats['replicationIngressTrafficCurrent'][0]['Bandwidth']", dashboardLocation: 'emcecs/traffic/gauge-replicationIngressTrafficCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'diskReadBandwidthTotalCurrent', source: "stats['diskReadBandwidthTotalCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskReadBandwidthTotalCurrent', value: null},
+					{stat: 'diskWriteBandwidthTotalCurrent', source: "stats['diskWriteBandwidthTotalCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskWriteBandwidthTotalCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'diskReadBandwidthRecoveryCurrent', source: "stats['diskReadBandwidthRecoveryCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskReadBandwidthRecoveryCurrent', value: null},
+					{stat: 'diskWriteBandwidthRecoveryCurrent', source: "stats['diskWriteBandwidthRecoveryCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskWriteBandwidthRecoveryCurrent', value: null},
+					// ------------------------------------------------------------------------------------ //
+					{stat: 'diskReadBandwidthGeoCurrent', source: "stats['diskReadBandwidthGeoCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskReadBandwidthGeoCurrent', value: null},
+					{stat: 'diskWriteBandwidthGeoCurrent', source: "stats['diskWriteBandwidthGeoCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskWriteBandwidthGeoCurrent', value: null}
+				]
+
+				var metricsWithData = [],
+					i = 0,
+					interval = 10
+
+				metrics.forEach(function(metric) {
+					try {
+						metric.value = eval(metric.source)
+						console.log('PUTVAL ' + metric.dashboardLocation + ' ' + interval + ' N:' + metric.value)
+						metrics[i] = metric
+					}
+					catch (e) {
+						// console.log('no data exists for: ' + metrics[i].stat)
+						metrics.splice(i, 1)
+					}
+					i++					
+				})
+
+				// console.log('metrics = ')
+				// console.log(metrics)
+
+				// // ------------------------------------------------------------------------------------ //
+				// stats['nodeMemoryUtilizationAvgCurrent'] != null ? ECSstats.nodeMemoryUtilizationAvgCurrent = stats['nodeMemoryUtilizationAvgCurrent'][0]['Percent'] : void 0
+				// stats['nodeCpuUtilizationAvgCurrent'] != null ? ECSstats.nodeCpuUtilizationAvgCurrent = stats['nodeCpuUtilizationAvgCurrent'][0]['Percent'] : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['numDisks'] != null ? ECSstats.numDisks = stats['numDisks'] : void 0
+				// stats['numGoodDisks'] != null ? ECSstats.numGoodDisks = stats['numGoodDisks'] : void 0
+				// stats['numBadDisks'] != null ? ECSstats.numBadDisks = stats['numBadDisks'] : void 0			
+				// // ------------------------------------------------------------------------------------ //
+				// stats['diskSpaceTotalCurrent'][0]['Space'] != null ? ECSstats.diskSpaceTotalCurrent = stats['diskSpaceTotalCurrent'][0]['Space']/1024/1024/1024 : void 0
+				// stats['diskSpaceFreeCurrent'][0]['Space'] != null ? ECSstats.diskSpaceFreeCurrent = stats['diskSpaceFreeCurrent'][0]['Space']/1024/1024/1024 : void 0
+				// stats['diskSpaceAllocatedCurrent'][0]['Space'] != null ? ECSstats.diskSpaceAllocatedCurrent = stats['diskSpaceAllocatedCurrent'][0]['Space']/1024/1024/1024 : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['transactionErrorsCurrent']['all'][0]['Rate'] != null ? ECSstats.transactionErrorsCurrent = stats['transactionErrorsCurrent']['all'][0]['Rate'] : void 0
+				// stats['transactionReadLatencyCurrent'][0]['Latency'] != null ? ECSstats.transactionReadLatencyCurrent = stats['transactionReadLatencyCurrent'][0]['Latency'] : void 0
+				// stats['transactionWriteLatencyCurrent'][0]['Latency'] != null ? ECSstats.transactionWriteLatencyCurrent = stats['transactionWriteLatencyCurrent'][0]['Latency'] : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['nodeNicUtilizationAvgCurrent'][0]['Percent'] != null ? ECSstats.nodeNicUtilizationAvgCurrent = stats['nodeNicUtilizationAvgCurrent'][0]['Percent'] : void 0
+				// stats['nodeNicBandwidthAvgCurrent'][0]['Bandwidth'] != null ? ECSstats.nodeNicBandwidthAvgCurrent = stats['nodeNicBandwidthAvgCurrent'][0]['Bandwidth'] : void 0
+				// stats['nodeNicReceivedBandwidthAvgCurrent'][0]['Bandwidth'] != null ? ECSstats.nodeNicReceivedBandwidthAvgCurrent = stats['nodeNicReceivedBandwidthAvgCurrent'][0]['Bandwidth'] : void 0
+				// stats['nodeNicTransmittedBandwidthAvgCurrent'][0]['Bandwidth'] != null ? ECSstats.nodeNicTransmittedBandwidthAvgCurrent = stats['nodeNicTransmittedBandwidthAvgCurrent'][0]['Bandwidth'] : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['diskReadBandwidthTotalCurrent'][0]['diskIO'] != null ? ECSstats.diskReadBandwidthTotalCurrent = stats['diskReadBandwidthTotalCurrent'][0]['diskIO'] : void 0
+				// stats['diskWriteBandwidthTotalCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthTotalCurrent = stats['diskWriteBandwidthTotalCurrent'][0]['diskIO'] : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['diskReadBandwidthGeoCurrent'][0]['diskIO'] != null ? ECSstats.diskReadBandwidthGeoCurrent = stats['diskReadBandwidthGeoCurrent'][0]['diskIO'] : void 0
+				// stats['diskWriteBandwidthGeoCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthGeoCurrent = stats['diskWriteBandwidthGeoCurrent'][0]['diskIO'] : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['recoveryRateCurrent'][0]["Rate"] != null ? ECSstats.recoveryRateCurrent = stats['recoveryRateCurrent'][0]["Rate"] : void 0	
+				// stats['diskReadBandwidthRecoveryCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthTotalCurrent = stats['diskReadBandwidthRecoveryCurrent'][0]['diskIO'] : void 0
+				// stats['diskWriteBandwidthRecoveryCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthRecoveryCurrent = stats['diskWriteBandwidthRecoveryCurrent'][0]['diskIO'] : void 0
+				// // ------------------------------------------------------------------------------------ //
+				// stats['replicationEgressTrafficCurrent'][0]['Bandwidth'] != null ? ECSstats.replicationEgressTrafficCurrent = stats['replicationEgressTrafficCurrent'][0]['Bandwidth'] : void 0
+				// stats['replicationIngressTrafficCurrent'][0]['Bandwidth'] != null ? ECSstats.replicationIngressTrafficCurrent = stats['replicationIngressTrafficCurrent'][0]['Bandwidth'] : void 0
+
+
+
 				callback(ECSstats)		
 			}
 		});			
