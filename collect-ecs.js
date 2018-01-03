@@ -3,60 +3,51 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0" // Avoids DEPTH_ZERO_SELF_SIGNED_
 var request = require('request'),
 	YAML = require('yamljs'),
 	xml2js = require('xml2js'),
-	util = require('util');
+	util = require('util'),
+	moment = require('moment'),
+	fs = require('fs');
 
+const ecsCredsFile = '/usr/share/collectd/ecs-creds.yml'
+const ecsConfigFile = '/usr/share/collectd/ecs-config.yml'
 var parser = new xml2js.Parser();
 var ECSconfig = {};
 
-if (ECSconfig.token == null) {
-	getECSConfig(function(ECSconfigData) {
-		ECSconfig = ECSconfigData;
-		getECSStats(function(stats) {
 
-				// console.log('numNodes = ' + stats.numNodes)
-				// console.log('numGoodNodes = ' + stats.numGoodNodes)
-				// console.log('numBadNodes = ' + stats.numBadNodes)
-				// console.log('nodeMemoryUtilizationAvgCurrent = ' + stats.nodeMemoryUtilizationAvgCurrent)
-				// console.log('nodeCpuUtilizationAvgCurrent = ' + stats.nodeCpuUtilizationAvgCurrent)
-				// console.log('numDisks = ' + stats.numDisks)
-				// console.log('numGoodDisks = ' + stats.numGoodDisks)
-				// console.log('numBadDisks = ' + stats.numBadDisks)
-				// console.log('diskSpaceTotalCurrent = ' + stats.diskSpaceTotalCurrent)
-				// console.log('diskSpaceFreeCurrent = ' + stats.diskSpaceFreeCurrent)
-				// console.log('diskSpaceAllocatedCurrent = ' + stats.diskSpaceAllocatedCurrent)
-				// console.log('transactionErrorsCurrent = ' + stats.transactionErrorsCurrent)
-				// console.log('transactionReadLatencyCurrent = ' + stats.transactionReadLatencyCurrent)
-				// console.log('transactionWriteLatencyCurrent = ' + stats.transactionWriteLatencyCurrent)
-				// console.log('nodeNicUtilizationAvgCurrent = ' + stats.nodeNicUtilizationAvgCurrent)
-				// console.log('nodeNicBandwidthAvgCurrent = ' + stats.nodeNicBandwidthAvgCurrent)
-				// console.log('nodeNicReceivedBandwidthAvgCurrent = ' + stats.nodeNicReceivedBandwidthAvgCurrent)
-				// console.log('nodeNicTransmittedBandwidthAvgCurrent = ' + stats.nodeNicTransmittedBandwidthAvgCurrent)
-				// console.log('diskReadBandwidthTotalCurrent = ' + stats.diskReadBandwidthTotalCurrent)
-				// console.log('diskWriteBandwidthTotalCurrent = ' + stats.diskWriteBandwidthTotalCurrent)
-				// console.log('diskReadBandwidthGeoCurrent = ' + stats.diskReadBandwidthGeoCurrent)
-				// console.log('diskWriteBandwidthGeoCurrent = ' + stats.diskWriteBandwidthGeoCurrent)
-				// console.log('recoveryRateCurrent = ' + stats.recoveryRateCurrent)
-				// console.log('diskReadBandwidthRecoveryCurrent = ' + stats.diskReadBandwidthRecoveryCurrent)
-				// console.log('diskWriteBandwidthRecoveryCurrent = ' + stats.diskWriteBandwidthRecoveryCurrent)
-				// console.log('replicationEgressTrafficCurrent = ' + stats.replicationEgressTrafficCurrent)
-				// console.log('replicationIngressTrafficCurrent = ' + stats.replicationIngressTrafficCurrent)
-
-		})	
-	})
+if (fs.existsSync(ecsConfigFile)) { // if the ECS API access token exists
+	var now = moment();
+	var fileStats = fs.statSync(ecsConfigFile)
+	var tokenRefreshed = moment(fileStats.mtime) // last modified time
+	var elapsedTime = now.diff(tokenRefreshed, 'hours')
+	console.log('elapsted time = ' + elapsedTime)
+	if (elapsedTime < 2) { // if the token is less than 2 hours old 
+		ECSconfig = YAML.load(ecsConfigFile) // build an object from the yaml file
+		getECSStats(function(stats) { // start the collection loop
+			if (stats[0].value == null) {
+				initialize()
+			} else {
+				console.log('looping through collection process...')
+			}	
+		})				
+	} else {
+		initialize()	
+	}
 } else {
-	console.log('ECS config already loaded')
-	getECSStats(function(stats) {
-		try {
-			console.log('diskSpaceTotalCurrent = ' + stats.diskSpaceTotalCurrent)
-		}
-		catch(e) {
-			console.log('missing stat:')
-			console.log(e)
-		}	
-	})	
+	initialize()
+}
+
+function initialize () {
+	getECSConfig(function(ECSconfigData) { // otherwise refresh the token and other data-source config info
+		yamlString = YAML.stringify(ECSconfigData, 4);
+		writeFile(ecsConfigFile, yamlString) // write it to file
+		console.log('initialization complete...')
+		getECSStats(function(stats) { // start the collection loop
+			console.log('looping through collection process...')
+		})	
+	})		
 }
 
 function getECSStats (callback) {
+	// console.log('getting ECS Stats...')
 	var ECSstats = {}
 
 	ECSDataCalls  = [
@@ -73,6 +64,7 @@ function getECSStats (callback) {
 
 		request.get(dataOptions, function(error, response, body) {
 			if (error) {
+				console.log('error getting ECS stats')
 				console.log(error)		
 			} else {
 				var stats = JSON.parse(body)
@@ -119,90 +111,57 @@ function getECSStats (callback) {
 					{stat: 'diskWriteBandwidthGeoCurrent', source: "stats['diskWriteBandwidthGeoCurrent'][0]['diskIO']", dashboardLocation: 'emcecs/bandwidth/gauge-diskWriteBandwidthGeoCurrent', value: null}
 				]
 
-				var metricsWithData = [],
-					i = 0,
+				var i = 0,
 					interval = 10
 
 				metrics.forEach(function(metric) {
 					try {
-						metric.value = eval(metric.source)
-						console.log('PUTVAL ' + metric.dashboardLocation + ' ' + interval + ' N:' + metric.value)
-						metrics[i] = metric
+						var rawValue = eval(metric.source);
+						metric.value = parseFloat(rawValue).toFixed(2);
+						// console.log(metric.stat + ' = ' + metric.value)
+						console.log(`PUTVAL ${metric.dashboardLocation} interval=${interval} N:${metric.value}`);
+						metrics[i] = metric;
 					}
 					catch (e) {
-						// console.log('no data exists for: ' + metrics[i].stat)
-						metrics.splice(i, 1)
+						console.log('no data exists for: ' + metrics[i].stat);
+						// console.log(e)
+						metrics.splice(i, 1);
 					}
 					i++					
 				})
-
-				// console.log('metrics = ')
-				// console.log(metrics)
-
-				// // ------------------------------------------------------------------------------------ //
-				// stats['nodeMemoryUtilizationAvgCurrent'] != null ? ECSstats.nodeMemoryUtilizationAvgCurrent = stats['nodeMemoryUtilizationAvgCurrent'][0]['Percent'] : void 0
-				// stats['nodeCpuUtilizationAvgCurrent'] != null ? ECSstats.nodeCpuUtilizationAvgCurrent = stats['nodeCpuUtilizationAvgCurrent'][0]['Percent'] : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['numDisks'] != null ? ECSstats.numDisks = stats['numDisks'] : void 0
-				// stats['numGoodDisks'] != null ? ECSstats.numGoodDisks = stats['numGoodDisks'] : void 0
-				// stats['numBadDisks'] != null ? ECSstats.numBadDisks = stats['numBadDisks'] : void 0			
-				// // ------------------------------------------------------------------------------------ //
-				// stats['diskSpaceTotalCurrent'][0]['Space'] != null ? ECSstats.diskSpaceTotalCurrent = stats['diskSpaceTotalCurrent'][0]['Space']/1024/1024/1024 : void 0
-				// stats['diskSpaceFreeCurrent'][0]['Space'] != null ? ECSstats.diskSpaceFreeCurrent = stats['diskSpaceFreeCurrent'][0]['Space']/1024/1024/1024 : void 0
-				// stats['diskSpaceAllocatedCurrent'][0]['Space'] != null ? ECSstats.diskSpaceAllocatedCurrent = stats['diskSpaceAllocatedCurrent'][0]['Space']/1024/1024/1024 : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['transactionErrorsCurrent']['all'][0]['Rate'] != null ? ECSstats.transactionErrorsCurrent = stats['transactionErrorsCurrent']['all'][0]['Rate'] : void 0
-				// stats['transactionReadLatencyCurrent'][0]['Latency'] != null ? ECSstats.transactionReadLatencyCurrent = stats['transactionReadLatencyCurrent'][0]['Latency'] : void 0
-				// stats['transactionWriteLatencyCurrent'][0]['Latency'] != null ? ECSstats.transactionWriteLatencyCurrent = stats['transactionWriteLatencyCurrent'][0]['Latency'] : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['nodeNicUtilizationAvgCurrent'][0]['Percent'] != null ? ECSstats.nodeNicUtilizationAvgCurrent = stats['nodeNicUtilizationAvgCurrent'][0]['Percent'] : void 0
-				// stats['nodeNicBandwidthAvgCurrent'][0]['Bandwidth'] != null ? ECSstats.nodeNicBandwidthAvgCurrent = stats['nodeNicBandwidthAvgCurrent'][0]['Bandwidth'] : void 0
-				// stats['nodeNicReceivedBandwidthAvgCurrent'][0]['Bandwidth'] != null ? ECSstats.nodeNicReceivedBandwidthAvgCurrent = stats['nodeNicReceivedBandwidthAvgCurrent'][0]['Bandwidth'] : void 0
-				// stats['nodeNicTransmittedBandwidthAvgCurrent'][0]['Bandwidth'] != null ? ECSstats.nodeNicTransmittedBandwidthAvgCurrent = stats['nodeNicTransmittedBandwidthAvgCurrent'][0]['Bandwidth'] : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['diskReadBandwidthTotalCurrent'][0]['diskIO'] != null ? ECSstats.diskReadBandwidthTotalCurrent = stats['diskReadBandwidthTotalCurrent'][0]['diskIO'] : void 0
-				// stats['diskWriteBandwidthTotalCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthTotalCurrent = stats['diskWriteBandwidthTotalCurrent'][0]['diskIO'] : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['diskReadBandwidthGeoCurrent'][0]['diskIO'] != null ? ECSstats.diskReadBandwidthGeoCurrent = stats['diskReadBandwidthGeoCurrent'][0]['diskIO'] : void 0
-				// stats['diskWriteBandwidthGeoCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthGeoCurrent = stats['diskWriteBandwidthGeoCurrent'][0]['diskIO'] : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['recoveryRateCurrent'][0]["Rate"] != null ? ECSstats.recoveryRateCurrent = stats['recoveryRateCurrent'][0]["Rate"] : void 0	
-				// stats['diskReadBandwidthRecoveryCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthTotalCurrent = stats['diskReadBandwidthRecoveryCurrent'][0]['diskIO'] : void 0
-				// stats['diskWriteBandwidthRecoveryCurrent'][0]['diskIO'] != null ? ECSstats.diskWriteBandwidthRecoveryCurrent = stats['diskWriteBandwidthRecoveryCurrent'][0]['diskIO'] : void 0
-				// // ------------------------------------------------------------------------------------ //
-				// stats['replicationEgressTrafficCurrent'][0]['Bandwidth'] != null ? ECSstats.replicationEgressTrafficCurrent = stats['replicationEgressTrafficCurrent'][0]['Bandwidth'] : void 0
-				// stats['replicationIngressTrafficCurrent'][0]['Bandwidth'] != null ? ECSstats.replicationIngressTrafficCurrent = stats['replicationIngressTrafficCurrent'][0]['Bandwidth'] : void 0
-
-
-
-				callback(ECSstats)		
+				callback(metrics)		
 			}
 		});			
 	})
 }
 
 function getECSConfig (callback) {
-	var configData = YAML.load('emcecs-config.yml')
-	var uri = 'https://' + configData.ip + ':4443/login'
-	var creds = configData.login + ':' + configData.pwd
-	var encodedCreds = new Buffer(creds).toString('base64') // note for node versions newer than 4.5, use Buffer.from - https://stackoverflow.com/questions/6182315/how-to-do-base64-encoding-in-node-js
+	var creds = YAML.load(ecsCredsFile)
+	// console.log('ECS config data = ' + JSON.stringify(creds))
+	var uri = 'https://' + creds.ip + ':4443/login'
+	var credsToEncode = creds.login + ':' + creds.pwd
+	var encodedCreds = new Buffer(credsToEncode).toString('base64') // note for node versions newer than 4.5, use Buffer.from - https://stackoverflow.com/questions/6182315/how-to-do-base64-encoding-in-node-js
 
 	var options = {
-		uri: 'https://' + configData.ip + ':4443/login',
+		uri: uri,
 		headers: {Authorization: 'Basic ' + encodedCreds}
 	}
 
 	request.get(options, function(error, response, body) {
 		if (error) {
+			console.log('error getting token')
 			console.log(error)		
 		} else {
-			configData.token = response.headers['x-sds-auth-token']
+			var configData = {
+					ip: creds.ip,
+					token: response.headers['x-sds-auth-token']
+				}
 		
 			ECSConfigCalls = [
 				// get storagepool ID
-				'https://' + configData.ip + ':4443/vdc/data-services/varrays', 
+				'https://' + creds.ip + ':4443/vdc/data-services/varrays', 
 				// get replication group ID
-				'https://' + configData.ip + ':4443//vdc/data-service/vpools'
+				'https://' + creds.ip + ':4443//vdc/data-service/vpools'
 			]
 
 			ECSConfigCalls.forEach(function(configCall) {
@@ -213,17 +172,25 @@ function getECSConfig (callback) {
 
 				request.get(configOptions, function(error, response, body) {
 					if (error) {
+						console.log('error getting ECS config info')
 						console.log(error)		
 					} else {
 						parser.parseString(body, function (err, result) {
+
 							// log output to full depth of resulting object
-							// console.log(util.inspect(result, false, null))
-							result.varrays != null ? configData.storagepool = result.varrays.varray[0].id[0] : void 0
-							result.data_service_vpools != null ? configData.replgroup = result.data_service_vpools.data_service_vpool[0].id[0] : void 0
+							console.log(util.inspect(result, false, null))
+							if (result.varrays != null) {
+								configData.storagepool = result.varrays.varray[0].id[0]
+								console.log('storagepool = ' + configData.storagepool)
+							}
+							if (result.data_service_vpools != null) {
+								configData.replgroup = result.data_service_vpools.data_service_vpool[0].id[0]
+								console.log('replgroup = ' + configData.replgroup)
+							}
 							if (configData.storagepool != null && configData.replgroup != null) {
-								// console.log('storagepool = ' + configData.storagepool)
-								// console.log('replgroup = ' + configData.replgroup)
 								callback(configData)
+							} else {
+								console.log('problem establishing storagepool or replication group IDs')
 							}
 						});
 					}			
@@ -233,7 +200,13 @@ function getECSConfig (callback) {
 	});	
 }
 
-
+function writeFile (filename, contents) {
+	fs.writeFile(filename, contents, function (err) {
+		if (err) {
+			console.log('error writing file: ' + err)
+		} 
+	})
+}
 
 
 

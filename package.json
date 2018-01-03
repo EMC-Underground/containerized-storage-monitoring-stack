@@ -1,7 +1,7 @@
 {
   "name": "containerized-storage-monitoring-stack",
   "version": "1.0.0",
-  "description": "## The approach and goal This is a work in progress. The purpose of this project is to build an infrastructure automation use case around the collection and presentation of storage metrics. The approach being taken is to use:",
+  "description": "",
   "main": "collect-ecs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/EMC-Underground/containerized-storage-monitoring-stack#readme",
   "dependencies": {
+    "moment": "^2.20.1",
     "request": "^2.83.0",
     "xml2js": "^0.4.19",
     "yamljs": "^0.3.0"
