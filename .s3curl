@@ -1,8 +1,0 @@
-%awsSecretAccessKeys = (
-   # ECS account
-   ecsid => {
-     id => 'object_user2',
-     key => '0ZFI4Wnlc7sKroLBCOf0Mn0KtUrJ2pCv82mvpBtZ',
-   },
-   @endpoints = ('10.4.44.4')
-);

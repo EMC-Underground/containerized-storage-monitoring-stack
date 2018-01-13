@@ -28,16 +28,15 @@ https://hub.docker.com/r/grafana/grafana/
 
 docker-compose will then build the collectd container via Dockerfile.
 
-The collectd.conf config file is generic except for the Plugin network part, and sets up collectd to send data to 127.0.0.1 and port 25826.
+- The collectd.conf config file is generic except for the Plugin network part, and sets up collectd to send data to 127.0.0.1 and port 25826.
 
-The influxdb.conf config file is also generic, the only change is to enable collectd
+- The influxdb.conf config file is also generic, the only change is to enable collectd
 
-The types.db file defines the collectd data source and influxdb needs it.
+- The types.db file defines the collectd data source and influxdb needs it.
 
 After running docker-compose, you can access:
 
 The influxdb web admin page at http://localhost:8083
-
 Grafana at http://localhost:3000 (login with default admin/admin)
 
 # Resources
@@ -45,6 +44,8 @@ Grafana at http://localhost:3000 (login with default admin/admin)
 ## Credits and References
 https://blog.laputa.io/try-influxdb-and-grafana-by-docker-6b4d50c6a446: setup of collectd, influxdb and grafana
 https://github.com/jonasrosland/collectd-ecs: prior work getting metrics out of ECS using python
+https://www.emc.com/techpubs/ecs/ecs_api_object_control_service-1.htm: Using the ECS management REST API
+https://oldhenhut.com/2016/09/01/examples-of-ecs-api-usage: ECS API usage via s3curl
 
 ## Status and Research on storage data feeds
 ECS: code in this repo currently collects, stores and displays 24 metrics 
@@ -55,9 +56,9 @@ Isilon: via Insights connector - https://github.com/Isilon/isilon_data_insights_
 
 VPLEX: maybe also a lead on how to proceed via https://community.emc.com/thread/239953?start=0&tstart=0
 
-VMAX: looking to leverage work by Vijay Kumar at Expedia
+VMAX: looking to leverage work by Craig Smith & Vijay Kumar - https://github.com/VijayEMC/VMAX-Graphite
 
-VNX/Unity: Not sure what is available
+VNX/Unity: Integrate work done by Craig Smith at https://github.com/EMC-Underground/vnx-info-collector
 
 XtremIO: reference https://kodywilson.com/2016/11/07/infrastructure-metrics-with-grafana-and-influxdb/
 
