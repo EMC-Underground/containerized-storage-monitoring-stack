@@ -16,7 +16,7 @@ The deployment of these supporting apps and code will be containerized and compl
 clone this repository and run:
 
 ```
-$ docker-compose up -d (or exlude the -d flag to not see output in console)
+$ docker-compose up (add -d flag to not show console output of the collectd process)
 ```
 
 ## Info

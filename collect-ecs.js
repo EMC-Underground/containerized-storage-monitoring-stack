@@ -22,21 +22,21 @@ if (fs.existsSync(ecsConfigFile)) { // if the ECS API access token exists
 	if (elapsedTime < 2) { // if the token is less than 2 hours old 
 		ECSconfig = YAML.load(ecsConfigFile) // build an object from the yaml file
 		getECSStats(function(stats) { // start the collection loop
-			if (stats[0].value == null) {
+			if (stats[0].value == null) { // no data found, so initialize
 				initialize()
 			} else {
 				console.log('looping through collection process...')
 			}	
 		})				
-	} else {
+	} else { // otherwise refresh the token and other data-source config info
 		initialize()	
 	}
-} else {
+} else { // otherwise refresh the token and other data-source config info
 	initialize()
 }
 
 function initialize () {
-	getECSConfig(function(ECSconfigData) { // otherwise refresh the token and other data-source config info
+	getECSConfig(function(ECSconfigData) { 
 		yamlString = YAML.stringify(ECSconfigData, 4);
 		writeFile(ecsConfigFile, yamlString) // write it to file
 		console.log('initialization complete...')
@@ -47,7 +47,6 @@ function initialize () {
 }
 
 function getECSStats (callback) {
-	// console.log('getting ECS Stats...')
 	var ECSstats = {}
 
 	ECSDataCalls  = [
@@ -118,7 +117,7 @@ function getECSStats (callback) {
 					try {
 						var rawValue = eval(metric.source);
 						metric.value = parseFloat(rawValue).toFixed(2);
-						// console.log(metric.stat + ' = ' + metric.value)
+						console.log(metric.stat + ' = ' + metric.value)
 						console.log(`PUTVAL ${metric.dashboardLocation} interval=${interval} N:${metric.value}`);
 						metrics[i] = metric;
 					}
@@ -164,7 +163,7 @@ function getECSConfig (callback) {
 				'https://' + creds.ip + ':4443//vdc/data-service/vpools'
 			]
 
-			ECSConfigCalls.forEach(function(configCall) {
+			ECSConfigCalls.forEach(function(configCall, idx, array) {
 				configOptions = {
 					uri: configCall,
 					headers: {'X-SDS-AUTH-TOKEN': configData.token}
@@ -179,6 +178,7 @@ function getECSConfig (callback) {
 
 							// log output to full depth of resulting object
 							console.log(util.inspect(result, false, null))
+
 							if (result.varrays != null) {
 								configData.storagepool = result.varrays.varray[0].id[0]
 								console.log('storagepool = ' + configData.storagepool)
@@ -190,7 +190,10 @@ function getECSConfig (callback) {
 							if (configData.storagepool != null && configData.replgroup != null) {
 								callback(configData)
 							} else {
-								console.log('problem establishing storagepool or replication group IDs')
+								if (idx === array.length - 1) { // this was the last item so all the data should be there
+									console.log('problem establishing storagepool or replication group IDs')
+								}
+								
 							}
 						});
 					}			
