@@ -22,9 +22,9 @@ $ docker-compose up (add -d flag to not show console output of the collectd proc
 ## Info
 docker-compose will pull existing images for influxdb and grafana from docker hub: 
 
-https://hub.docker.com/_/influxdb/
+- https://hub.docker.com/_/influxdb/
 
-https://hub.docker.com/r/grafana/grafana/
+- https://hub.docker.com/r/grafana/grafana/
 
 docker-compose will then build the collectd container via Dockerfile.
 
@@ -36,8 +36,16 @@ docker-compose will then build the collectd container via Dockerfile.
 
 After running docker-compose, you can access:
 
-The influxdb web admin page at http://localhost:8083
-Grafana at http://localhost:3000 (login with default admin/admin)
+- The influxdb web admin page at http://localhost:8083
+- Grafana at http://localhost:3000 (login with default admin/admin)
+
+## Utilities
+The util directory contains some shell scripts that may be useful in dev:
+- dockerNuke.sh: blows away all containers and images - use with care
+- putFileToECS.sh: uses s3curl to put a file into a test bucket (generate workload for ECS)
+- setECStoken.sh: curl command to set the ECS token for later use, stored as cookiefile
+- getECSinfo.sh: curl command to get ECS config info, must first have cookiefile from above
+- setupGrafana.sh: http post commands to set the Grafana data source and dashboard framework, credit Jonas Rosland 
 
 # Resources
 
