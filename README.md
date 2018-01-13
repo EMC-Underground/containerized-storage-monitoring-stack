@@ -28,9 +28,9 @@ docker-compose will pull existing images for influxdb and grafana from docker hu
 
 docker-compose will then build the collectd container via Dockerfile.
 
-- The collectd.conf config file is generic except for the Plugin network part, and sets up collectd to send data to 127.0.0.1 and port 25826.
+- The collectd.conf config file is generic except for 1) the Plugin network part sets up collectd to send data to 127.0.0.1 and port 25826 and 2) the Plugin exec part that calls collect-ecs.js.
 
-- The influxdb.conf config file is also generic, the only change is to enable collectd
+- The influxdb.conf config file is also generic, the only change is to enable collectd ('enabled=true')
 
 - The types.db file defines the collectd data source and influxdb needs it.
 
