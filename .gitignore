@@ -18,3 +18,5 @@ cookiefile
 types.db
 temp
 .DS_Store
+*.old
+*.orig
