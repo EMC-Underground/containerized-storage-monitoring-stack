@@ -32,6 +32,7 @@ grafana_api() {
 wait_for_api() {
   while ! grafana_api GET /api/user/preferences
   do
+    echo "setup.sh waiting for API..."
     sleep 5
   done 
 }
@@ -46,9 +47,9 @@ install_datasources() {
       # use httPie approach, curl approach from original source not working
       http POST http://admin:admin@localhost:3000/api/datasources < ${datasource}
       if grafana_api GET /api/datasources "" "${datasource}"; then
-        echo "datasource installed ok"
+        echo "datasource installation: success"
       else
-        echo "datasource install failed"
+        echo "datasource installation: failed"
       fi
     fi
   done
@@ -63,11 +64,13 @@ install_dashboards() {
       echo "Installing dashboard ${dashboard}"
       # use httPie approach, curl approach from original source not working
       http POST http://admin:admin@localhost:3000/api/dashboards/db < ${dashboard}
-
-      if grafana_api GET /api/dashboards/db:EMCECS; then
-        echo "dashboard installed ok"
+      echo ${dashboard##*/}
+      dashboard=${dashboard##*/}
+      echo ${dashboard%.json}
+      if grafana_api GET /api/dashboards/db/${dashboard%.json}; then
+        echo ${name%.json} " dashboard installation: success"
       else
-        echo "dashboard install failed"
+        echo ${name%.json} " dashboard installation: failed"
       fi
 
     fi

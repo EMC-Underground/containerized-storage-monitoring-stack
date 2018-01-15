@@ -1,10 +1,10 @@
 {
   "dashboard": {
     "id": null,
-    "title": "EMCECS",
-    "originalTitle": "EMCECS",
+    "title": "VPLEX",
+    "originalTitle": "VPLEX",
     "tags": [
-      "emc ecs",
+      "emc vplex",
       "storage"
     ],
     "style": "dark",
