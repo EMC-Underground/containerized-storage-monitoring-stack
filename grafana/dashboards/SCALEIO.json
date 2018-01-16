@@ -4,7 +4,7 @@
     "title": "SCALEIO",
     "originalTitle": "SCALEIO",
     "tags": [
-      "emc scaleio",
+      "emc ecs",
       "storage"
     ],
     "style": "dark",
@@ -21,7 +21,7 @@
           {
             "aliasColors": {},
             "bars": false,
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "editable": true,
             "error": false,
             "fill": 1,
@@ -219,7 +219,7 @@
           {
             "aliasColors": {},
             "bars": false,
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "editable": true,
             "error": false,
             "fill": 1,
@@ -425,7 +425,7 @@
           {
             "aliasColors": {},
             "bars": false,
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "editable": true,
             "error": false,
             "fill": 1,
@@ -752,7 +752,7 @@
           {
             "aliasColors": {},
             "bars": false,
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "editable": true,
             "error": false,
             "fill": 1,
@@ -1086,7 +1086,7 @@
                 "alias": "Suspect Nodes"
               }
             ],
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "renderer": "flot",
             "yaxes": [
               {
@@ -1250,7 +1250,7 @@
                 "alias": "Memory Utilization"
               }
             ],
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "renderer": "flot",
             "yaxes": [
               {
@@ -1448,7 +1448,7 @@
                 "alias": "Transmitted bandwidth"
               }
             ],
-            "datasource": "collectd",
+            "datasource": "collectd-scaleio",
             "renderer": "flot",
             "yaxes": [
               {

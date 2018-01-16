@@ -1,17 +1,15 @@
 {
-  "dashboard": {
-    "id": null,
-    "title": "UNITY",
-    "originalTitle": "UNITY",
-    "tags": [
-      "emc unity",
-      "storage"
-    ],
-    "style": "dark",
-    "timezone": "browser",
+  "dashboard": {  
+    "annotations": {
+      "list": []
+    },
     "editable": true,
     "hideControls": false,
-    "sharedCrosshair": false,
+    "title": "UNITY",  
+    "id": null,
+    "links": [],
+    "originalTitle": "UNITY",
+    "refresh": "10s",
     "rows": [
       {
         "collapse": false,
@@ -19,19 +17,33 @@
         "height": "250px",
         "panels": [
           {
-            "aliasColors": {},
+            "aliasColors": {
+              "Allocated": "#E5AC0E",
+              "Allocated (not stacked)": "#CCA300",
+              "Available": "#508642",
+              "Degraded": "#C15C17",
+              "Failed": "#890F02",
+              "Raw": "#DEDAF7",
+              "Spare": "#82B5D8",
+              "Unreachable": "#E24D42",
+              "Unused": "#3F6833",
+              "Useable": "#F9E2D2",
+              "Used": "#0A437C"
+            },
             "bars": false,
-            "datasource": "collectd",
+            "datasource": "collectd-ecs",
+            "decimals": null,
             "editable": true,
             "error": false,
-            "fill": 1,
+            "fill": 0,
             "grid": {
               "threshold1": null,
               "threshold1Color": "rgba(216, 200, 27, 0.27)",
               "threshold2": null,
               "threshold2Color": "rgba(234, 112, 112, 0.22)"
             },
-            "id": 2,
+            "id": 1,
+            "interval": ">10s",
             "isNew": true,
             "legend": {
               "avg": false,
@@ -47,16 +59,17 @@
             "links": [],
             "nullPointMode": "connected",
             "percentage": false,
-            "pointradius": 5,
+            "pointradius": 1,
             "points": false,
             "renderer": "flot",
+            "scopedVars": {},
             "seriesOverrides": [],
             "span": 6,
             "stack": false,
             "steppedLine": false,
             "targets": [
               {
-                "alias": "Transaction Reads/s",
+                "alias": "Failed",
                 "dsType": "influxdb",
                 "groupBy": [
                   {
@@ -72,541 +85,9 @@
                     "type": "fill"
                   }
                 ],
-                "measurement": "transactions_value",
+                "measurement": "scaleio_pool_value",
                 "policy": "default",
-                "refId": "A",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "transactionReadLatencyCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Transaction Writes/s",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "transactions_value",
-                "policy": "default",
-                "refId": "B",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "transactionWriteLatencyCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Transaction Errors",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "transactions_value",
-                "policy": "default",
-                "refId": "C",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "transactionErrorsCurrent"
-                  }
-                ]
-              }
-            ],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Transactions",
-            "tooltip": {
-              "msResolution": false,
-              "shared": true,
-              "value_type": "cumulative"
-            },
-            "type": "graph",
-            "xaxis": {
-              "show": true
-            },
-            "yaxes": [
-              {
-                "format": "short",
-                "label": null,
-                "logBase": 1,
-                "max": null,
-                "min": null,
-                "show": true
-              },
-              {
-                "format": "short",
-                "label": null,
-                "logBase": 1,
-                "max": null,
-                "min": null,
-                "show": true
-              }
-            ]
-          },
-          {
-            "aliasColors": {},
-            "bars": false,
-            "datasource": "collectd",
-            "editable": true,
-            "error": false,
-            "fill": 1,
-            "grid": {
-              "threshold1": null,
-              "threshold1Color": "rgba(216, 200, 27, 0.27)",
-              "threshold2": null,
-              "threshold2Color": "rgba(234, 112, 112, 0.22)"
-            },
-            "id": 3,
-            "isNew": true,
-            "legend": {
-              "avg": false,
-              "current": false,
-              "max": false,
-              "min": false,
-              "show": true,
-              "total": false,
-              "values": false
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "connected",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "span": 6,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-              {
-                "alias": "Total disk space",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "space_value",
-                "policy": "default",
-                "refId": "A",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskSpaceTotalCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Allocated disk space",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "space_value",
-                "policy": "default",
-                "refId": "B",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskSpaceAllocatedCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Free disk space",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "space_value",
-                "policy": "default",
-                "refId": "C",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskSpaceFreeCurrent"
-                  }
-                ]
-              }
-            ],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Disk space",
-            "tooltip": {
-              "msResolution": false,
-              "shared": true,
-              "value_type": "cumulative"
-            },
-            "type": "graph",
-            "xaxis": {
-              "show": true
-            },
-            "yaxes": [
-              {
-                "format": "short",
-                "label": null,
-                "logBase": 1,
-                "max": null,
-                "min": null,
-                "show": true
-              },
-              {
-                "format": "short",
-                "label": null,
-                "logBase": 1,
-                "max": null,
-                "min": null,
-                "show": true
-              }
-            ]
-          }
-        ],
-        "title": "New row"
-      },
-      {
-        "collapse": false,
-        "editable": true,
-        "height": "250px",
-        "panels": [
-          {
-            "aliasColors": {},
-            "bars": false,
-            "datasource": "collectd",
-            "editable": true,
-            "error": false,
-            "fill": 1,
-            "grid": {
-              "threshold1": null,
-              "threshold1Color": "rgba(216, 200, 27, 0.27)",
-              "threshold2": null,
-              "threshold2Color": "rgba(234, 112, 112, 0.22)"
-            },
-            "id": 4,
-            "isNew": true,
-            "legend": {
-              "avg": false,
-              "current": false,
-              "max": false,
-              "min": false,
-              "show": true,
-              "total": false,
-              "values": false
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "connected",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "span": 4,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-              {
-                "alias": "Disk read BW Total",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "bandwidth_value",
-                "policy": "default",
-                "refId": "A",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskReadBandwidthTotalCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Disk write BW Total",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "bandwidth_value",
-                "policy": "default",
-                "refId": "B",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskWriteBandwidthTotalCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Disk read BW Recovery",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "bandwidth_value",
-                "policy": "default",
-                "refId": "C",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskReadBandwidthRecoveryCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Disk write BW Recovery",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "bandwidth_value",
-                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'failed_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "D",
                 "resultFormat": "time_series",
                 "select": [
@@ -625,14 +106,20 @@
                 ],
                 "tags": [
                   {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
                     "key": "type_instance",
                     "operator": "=",
-                    "value": "diskWriteBandwidthRecoveryCurrent"
+                    "value": "failed_bytes"
                   }
                 ]
               },
               {
-                "alias": "Disk read BW Geo",
+                "alias": "Degraded",
                 "dsType": "influxdb",
                 "groupBy": [
                   {
@@ -648,51 +135,9 @@
                     "type": "fill"
                   }
                 ],
-                "measurement": "bandwidth_value",
+                "measurement": "scaleio_pool_value",
                 "policy": "default",
-                "refId": "F",
-                "resultFormat": "time_series",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "value"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "mean"
-                    }
-                  ]
-                ],
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "diskReadBandwidthGeoCurrent"
-                  }
-                ]
-              },
-              {
-                "alias": "Disk write BW Geo",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "$interval"
-                    ],
-                    "type": "time"
-                  },
-                  {
-                    "params": [
-                      "null"
-                    ],
-                    "type": "fill"
-                  }
-                ],
-                "measurement": "bandwidth_value",
-                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'degraded_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "E",
                 "resultFormat": "time_series",
                 "select": [
@@ -711,20 +156,327 @@
                 ],
                 "tags": [
                   {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
                     "key": "type_instance",
                     "operator": "=",
-                    "value": "diskWriteBandwidthGeoCurrent"
+                    "value": "degraded_bytes"
+                  }
+                ]
+              },
+              {
+                "alias": "Unreachable",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'unreachable_unused_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "F",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "unreachable_unused_bytes"
+                  }
+                ]
+              },
+              {
+                "alias": "Spare",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "hide": false,
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'spare_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "G",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "spare_bytes"
+                  }
+                ]
+              },
+              {
+                "alias": "Used",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'used_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "B",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "used_bytes"
+                  }
+                ]
+              },
+              {
+                "alias": "Available",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'available_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "available_bytes"
+                  }
+                ]
+              },
+              {
+                "alias": "Allocated",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'allocated_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "C",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "allocated_bytes"
+                  }
+                ]
+              },
+              {
+                "alias": "Useable",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'useable_bytes' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "H",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "useable_bytes"
                   }
                 ]
               }
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Disk bandwidth",
+            "title": "Real Capacity",
             "tooltip": {
-              "msResolution": false,
+              "msResolution": true,
               "shared": true,
-              "value_type": "cumulative"
+              "value_type": "individual"
             },
             "type": "graph",
             "xaxis": {
@@ -732,8 +484,7 @@
             },
             "yaxes": [
               {
-                "format": "short",
-                "label": null,
+                "format": "bytes",
                 "logBase": 1,
                 "max": null,
                 "min": null,
@@ -741,7 +492,6 @@
               },
               {
                 "format": "short",
-                "label": null,
                 "logBase": 1,
                 "max": null,
                 "min": null,
@@ -750,9 +500,18 @@
             ]
           },
           {
-            "aliasColors": {},
+            "aliasColors": {
+              "Allocated": "#E5AC0E",
+              "Read": "#447EBC",
+              "Read IOPS": "#82B5D8",
+              "Useable": "#82B5D8",
+              "Used": "#3F6833",
+              "Write": "#BF1B00",
+              "Write IOPS": "#E24D42"
+            },
             "bars": false,
-            "datasource": "collectd",
+            "datasource": "collectd-ecs",
+            "decimals": null,
             "editable": true,
             "error": false,
             "fill": 1,
@@ -762,13 +521,15 @@
               "threshold2": null,
               "threshold2Color": "rgba(234, 112, 112, 0.22)"
             },
-            "id": 5,
+            "id": 2,
+            "interval": ">10s",
             "isNew": true,
             "legend": {
               "avg": false,
               "current": false,
               "max": false,
               "min": false,
+              "rightSide": false,
               "show": true,
               "total": false,
               "values": false
@@ -781,13 +542,23 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
-            "span": 4,
+            "scopedVars": {},
+            "seriesOverrides": [
+              {
+                "alias": "Write IOPS",
+                "yaxis": 2
+              },
+              {
+                "alias": "Read IOPS",
+                "yaxis": 2
+              }
+            ],
+            "span": 6,
             "stack": false,
             "steppedLine": false,
             "targets": [
               {
-                "alias": "Replication Egress Traffic",
+                "alias": "Read",
                 "dsType": "influxdb",
                 "groupBy": [
                   {
@@ -803,8 +574,9 @@
                     "type": "fill"
                   }
                 ],
-                "measurement": "traffic_value",
+                "measurement": "scaleio_pool_value",
                 "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'read_bps' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "A",
                 "resultFormat": "time_series",
                 "select": [
@@ -823,14 +595,20 @@
                 ],
                 "tags": [
                   {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
                     "key": "type_instance",
                     "operator": "=",
-                    "value": "replicationEgressTrafficCurrent"
+                    "value": "read_bps"
                   }
                 ]
               },
               {
-                "alias": "Replication Ingress Traffic",
+                "alias": "Write",
                 "dsType": "influxdb",
                 "groupBy": [
                   {
@@ -846,8 +624,9 @@
                     "type": "fill"
                   }
                 ],
-                "measurement": "traffic_value",
+                "measurement": "scaleio_pool_value",
                 "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'write_bps' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "B",
                 "resultFormat": "time_series",
                 "select": [
@@ -866,16 +645,22 @@
                 ],
                 "tags": [
                   {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
                     "key": "type_instance",
                     "operator": "=",
-                    "value": "replicationIngressTrafficCurrent"
+                    "value": "write_bps"
                   }
                 ]
               }
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Replication Traffic",
+            "title": "Workload Throughput",
             "tooltip": {
               "msResolution": false,
               "shared": true,
@@ -887,16 +672,16 @@
             },
             "yaxes": [
               {
-                "format": "short",
-                "label": null,
+                "format": "Bps",
+                "label": "Throughput",
                 "logBase": 1,
                 "max": null,
                 "min": null,
                 "show": true
               },
               {
-                "format": "short",
-                "label": null,
+                "format": "none",
+                "label": "",
                 "logBase": 1,
                 "max": null,
                 "min": null,
@@ -905,616 +690,539 @@
             ]
           },
           {
-            "title": "Nodes",
-            "error": false,
-            "span": 4,
-            "editable": true,
-            "type": "graph",
-            "isNew": true,
-            "id": 6,
-            "targets": [
-              {
-                "refId": "A",
-                "policy": "default",
-                "dsType": "influxdb",
-                "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "numNodes"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
-                "select": [
-                  [
-                    {
-                      "type": "field",
-                      "params": [
-                        "value"
-                      ]
-                    },
-                    {
-                      "type": "mean",
-                      "params": []
-                    }
-                  ]
-                ],
-                "measurement": "nodes_value",
-                "alias": "Nodes"
-              },
-              {
-                "refId": "B",
-                "policy": "default",
-                "dsType": "influxdb",
-                "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "numGoodNodes"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
-                "select": [
-                  [
-                    {
-                      "type": "field",
-                      "params": [
-                        "value"
-                      ]
-                    },
-                    {
-                      "type": "mean",
-                      "params": []
-                    }
-                  ]
-                ],
-                "measurement": "nodes_value",
-                "alias": "Good Nodes"
-              },
-              {
-                "refId": "C",
-                "policy": "default",
-                "dsType": "influxdb",
-                "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "numBadNodes"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
-                "select": [
-                  [
-                    {
-                      "type": "field",
-                      "params": [
-                        "value"
-                      ]
-                    },
-                    {
-                      "type": "mean",
-                      "params": []
-                    }
-                  ]
-                ],
-                "measurement": "nodes_value",
-                "alias": "Bad Nodes"
-              },
-              {
-                "refId": "D",
-                "policy": "default",
-                "dsType": "influxdb",
-                "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "numSuspectNodes"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
-                "select": [
-                  [
-                    {
-                      "type": "field",
-                      "params": [
-                        "value"
-                      ]
-                    },
-                    {
-                      "type": "mean",
-                      "params": []
-                    }
-                  ]
-                ],
-                "measurement": "nodes_value",
-                "alias": "Suspect Nodes"
-              }
-            ],
-            "datasource": "collectd",
-            "renderer": "flot",
-            "yaxes": [
-              {
-                "label": null,
-                "show": true,
-                "logBase": 1,
-                "min": null,
-                "max": null,
-                "format": "short"
-              },
-              {
-                "label": null,
-                "show": true,
-                "logBase": 1,
-                "min": null,
-                "max": null,
-                "format": "short"
-              }
-            ],
-            "xaxis": {
-              "show": true
+            "aliasColors": {
+              "Allocated": "#E5AC0E",
+              "Read": "#447EBC",
+              "Read IOPS": "#82B5D8",
+              "Rebalance IOPS": "#3F6833",
+              "Rebuild": "#E0752D",
+              "Rebuild IOPS": "#EAB839",
+              "Useable": "#82B5D8",
+              "Used": "#3F6833",
+              "Write": "#BF1B00",
+              "Write IOPS": "#E24D42"
             },
+            "bars": false,
+            "datasource": "collectd-ecs",
+            "decimals": null,
+            "editable": true,
+            "error": false,
+            "fill": 1,
             "grid": {
               "threshold1": null,
-              "threshold2": null,
               "threshold1Color": "rgba(216, 200, 27, 0.27)",
+              "threshold2": null,
               "threshold2Color": "rgba(234, 112, 112, 0.22)"
             },
-            "lines": true,
-            "fill": 1,
-            "linewidth": 2,
-            "points": false,
-            "pointradius": 5,
-            "bars": false,
-            "stack": false,
-            "percentage": false,
+            "id": 3,
+            "interval": ">10s",
+            "isNew": true,
             "legend": {
-              "show": true,
-              "values": false,
-              "min": false,
-              "max": false,
+              "avg": false,
               "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": false,
+              "show": true,
               "total": false,
-              "avg": false
+              "values": false
             },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
             "nullPointMode": "connected",
-            "steppedLine": false,
-            "tooltip": {
-              "value_type": "cumulative",
-              "shared": true,
-              "msResolution": false
-            },
-            "timeFrom": null,
-            "timeShift": null,
-            "aliasColors": {},
-            "seriesOverrides": [],
-            "links": []
-          }
-        ],
-        "title": "New row"
-      },
-      {
-        "title": "New row",
-        "height": "250px",
-        "editable": true,
-        "collapse": false,
-        "panels": [
-          {
-            "title": "CPU And Memory",
-            "error": false,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "scopedVars": {},
+            "seriesOverrides": [
+              {
+                "alias": "Write IOPS",
+                "yaxis": 2
+              },
+              {
+                "alias": "Read IOPS",
+                "yaxis": 2
+              },
+              {
+                "alias": "Rebuild IOPS",
+                "yaxis": 2
+              },
+              {
+                "alias": "Rebuild",
+                "yaxis": 1
+              },
+              {
+                "alias": "Rebalance IOPS",
+                "yaxis": 2
+              }
+            ],
             "span": 6,
-            "editable": true,
-            "type": "graph",
-            "isNew": true,
-            "id": 7,
+            "stack": false,
+            "steppedLine": false,
             "targets": [
               {
+                "alias": "Rebalance",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'rebalance_bps' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "A",
-                "policy": "default",
-                "dsType": "influxdb",
                 "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "nodeCpuUtilizationAvgCurrent"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
                 "select": [
                   [
                     {
-                      "type": "field",
                       "params": [
                         "value"
-                      ]
+                      ],
+                      "type": "field"
                     },
                     {
-                      "type": "mean",
-                      "params": []
+                      "params": [],
+                      "type": "mean"
                     }
                   ]
                 ],
-                "measurement": "nodes_value",
-                "alias": "CPU Utilization"
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "rebalance_bps"
+                  }
+                ]
               },
               {
+                "alias": "Rebalance IOPS",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'rebalance_iops' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "B",
-                "policy": "default",
-                "dsType": "influxdb",
                 "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "nodeMemoryUtilizationAvgCurrent"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
                 "select": [
                   [
                     {
-                      "type": "field",
                       "params": [
                         "value"
-                      ]
+                      ],
+                      "type": "field"
                     },
                     {
-                      "type": "mean",
-                      "params": []
+                      "params": [],
+                      "type": "mean"
                     }
                   ]
                 ],
-                "measurement": "nodes_value",
-                "alias": "Memory Utilization"
-              }
-            ],
-            "datasource": "collectd",
-            "renderer": "flot",
-            "yaxes": [
-              {
-                "label": null,
-                "show": true,
-                "logBase": 1,
-                "min": null,
-                "max": null,
-                "format": "short"
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "rebalance_iops"
+                  }
+                ]
               },
               {
-                "label": null,
-                "show": true,
-                "logBase": 1,
-                "min": null,
-                "max": null,
-                "format": "short"
+                "alias": "Rebuild",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'rebuild_bps' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "C",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "rebuild_bps"
+                  }
+                ]
+              },
+              {
+                "alias": "Rebuild IOPS",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'rebuild_iops' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "D",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "rebuild_iops"
+                  }
+                ]
               }
             ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Rebuild/Rebalance",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "value_type": "cumulative"
+            },
+            "type": "graph",
             "xaxis": {
               "show": true
             },
-            "grid": {
-              "threshold1": null,
-              "threshold2": null,
-              "threshold1Color": "rgba(216, 200, 27, 0.27)",
-              "threshold2Color": "rgba(234, 112, 112, 0.22)"
-            },
-            "lines": true,
-            "fill": 1,
-            "linewidth": 2,
-            "points": false,
-            "pointradius": 5,
-            "bars": false,
-            "stack": false,
-            "percentage": false,
-            "legend": {
-              "show": true,
-              "values": false,
-              "min": false,
-              "max": false,
-              "current": false,
-              "total": false,
-              "avg": false
-            },
-            "nullPointMode": "connected",
-            "steppedLine": false,
-            "tooltip": {
-              "value_type": "cumulative",
-              "shared": true,
-              "msResolution": false
-            },
-            "timeFrom": null,
-            "timeShift": null,
-            "aliasColors": {},
-            "seriesOverrides": [],
-            "links": []
+            "yaxes": [
+              {
+                "format": "Bps",
+                "label": "Throughput",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "iops",
+                "label": "IOPS",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ]
           },
           {
-            "title": "Network utilization",
-            "error": false,
-            "span": 6,
+            "aliasColors": {
+              "Allocated": "#E5AC0E",
+              "Read": "#447EBC",
+              "Read IOPS": "#447EBC",
+              "Useable": "#82B5D8",
+              "Used": "#3F6833",
+              "Write": "#BF1B00",
+              "Write IOPS": "#BF1B00"
+            },
+            "bars": false,
+            "datasource": "collectd-ecs",
+            "decimals": null,
             "editable": true,
-            "type": "graph",
+            "error": false,
+            "fill": 1,
+            "grid": {
+              "threshold1": null,
+              "threshold1Color": "rgba(216, 200, 27, 0.27)",
+              "threshold2": null,
+              "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            },
+            "id": 4,
+            "interval": ">10s",
             "isNew": true,
-            "id": 8,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "connected",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "scopedVars": {},
+            "seriesOverrides": [
+              {
+                "alias": "Write IOPS",
+                "yaxis": 1
+              },
+              {
+                "alias": "Read IOPS",
+                "yaxis": 1
+              }
+            ],
+            "span": 6,
+            "stack": false,
+            "steppedLine": false,
             "targets": [
               {
-                "refId": "A",
-                "policy": "default",
+                "alias": "Read IOPS",
                 "dsType": "influxdb",
-                "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "nodeNicBandwidthAvgCurrent"
-                  }
-                ],
                 "groupBy": [
                   {
-                    "type": "time",
                     "params": [
                       "$interval"
-                    ]
+                    ],
+                    "type": "time"
                   },
                   {
-                    "type": "fill",
                     "params": [
                       "null"
-                    ]
+                    ],
+                    "type": "fill"
                   }
                 ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'read_iops' AND $timeFilter GROUP BY time($interval) fill(null)",
+                "refId": "D",
+                "resultFormat": "time_series",
                 "select": [
                   [
                     {
-                      "type": "field",
                       "params": [
                         "value"
-                      ]
+                      ],
+                      "type": "field"
                     },
                     {
-                      "type": "mean",
-                      "params": []
+                      "params": [],
+                      "type": "mean"
                     }
                   ]
                 ],
-                "measurement": "bandwidth_value",
-                "alias": "Avg Bandwidth"
-              },
-              {
-                "refId": "B",
-                "policy": "default",
-                "dsType": "influxdb",
-                "resultFormat": "time_series",
                 "tags": [
                   {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "nodeNicReceivedBandwidthAvgCurrent"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
                   },
                   {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "read_iops"
                   }
-                ],
-                "select": [
-                  [
-                    {
-                      "type": "field",
-                      "params": [
-                        "value"
-                      ]
-                    },
-                    {
-                      "type": "mean",
-                      "params": []
-                    }
-                  ]
-                ],
-                "measurement": "bandwidth_value",
-                "alias": "Received bandwidth"
+                ]
               },
               {
+                "alias": "Write IOPS",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "scaleio_pool_value",
+                "policy": "default",
+                "query": "SELECT mean(\"value\") FROM \"scaleio_pool_value\" WHERE \"instance\" =~ /$StoragePool$/ AND \"type_instance\" = 'write_iops' AND $timeFilter GROUP BY time($interval) fill(null)",
                 "refId": "C",
-                "policy": "default",
-                "dsType": "influxdb",
                 "resultFormat": "time_series",
-                "tags": [
-                  {
-                    "key": "type_instance",
-                    "operator": "=",
-                    "value": "nodeNicTransmittedBandwidthAvgCurrent"
-                  }
-                ],
-                "groupBy": [
-                  {
-                    "type": "time",
-                    "params": [
-                      "$interval"
-                    ]
-                  },
-                  {
-                    "type": "fill",
-                    "params": [
-                      "null"
-                    ]
-                  }
-                ],
                 "select": [
                   [
                     {
-                      "type": "field",
                       "params": [
                         "value"
-                      ]
+                      ],
+                      "type": "field"
                     },
                     {
-                      "type": "mean",
-                      "params": []
+                      "params": [],
+                      "type": "mean"
                     }
                   ]
                 ],
-                "measurement": "bandwidth_value",
-                "alias": "Transmitted bandwidth"
+                "tags": [
+                  {
+                    "key": "instance",
+                    "operator": "=~",
+                    "value": "/$StoragePool$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "type_instance",
+                    "operator": "=",
+                    "value": "write_iops"
+                  }
+                ]
               }
             ],
-            "datasource": "collectd",
-            "renderer": "flot",
-            "yaxes": [
-              {
-                "label": null,
-                "show": true,
-                "logBase": 1,
-                "min": null,
-                "max": null,
-                "format": "short"
-              },
-              {
-                "label": null,
-                "show": true,
-                "logBase": 1,
-                "min": null,
-                "max": null,
-                "format": "short"
-              }
-            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Workload IOPS",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "value_type": "cumulative"
+            },
+            "type": "graph",
             "xaxis": {
               "show": true
             },
-            "grid": {
-              "threshold1": null,
-              "threshold2": null,
-              "threshold1Color": "rgba(216, 200, 27, 0.27)",
-              "threshold2Color": "rgba(234, 112, 112, 0.22)"
-            },
-            "lines": true,
-            "fill": 1,
-            "linewidth": 2,
-            "points": false,
-            "pointradius": 5,
-            "bars": false,
-            "stack": false,
-            "percentage": false,
-            "legend": {
-              "show": true,
-              "values": false,
-              "min": false,
-              "max": false,
-              "current": false,
-              "total": false,
-              "avg": false
-            },
-            "nullPointMode": "connected",
-            "steppedLine": false,
-            "tooltip": {
-              "value_type": "cumulative",
-              "shared": true,
-              "msResolution": false
-            },
-            "timeFrom": null,
-            "timeShift": null,
-            "aliasColors": {},
-            "seriesOverrides": [],
-            "links": []
+            "yaxes": [
+              {
+                "format": "iops",
+                "label": "Throughput",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "none",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ]
           }
-        ]
+        ],
+        "repeat": "StoragePool",
+        "scopedVars": {},
+        "showTitle": true,
+        "title": "Storage Pool $StoragePool"
       }
     ],
+    "schemaVersion": 12,
+    "sharedCrosshair": false,
+    "style": "dark",
+    "tags": [
+      "ScaleIO",
+      "Storage"
+    ],
+    "templating": {
+      "list": [
+        {
+          "allFormat": "regex values",
+          "current": {},
+          "datasource": "collectd-ecs",
+          "hide": 0,
+          "includeAll": true,
+          "multi": true,
+          "multiFormat": "regex values",
+          "name": "StoragePool",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM scaleio_pool_value WITH KEY = \"instance\"",
+          "refresh": 1,
+          "regex": "",
+          "type": "query"
+        }
+      ]
+    },
     "time": {
-      "from": "now-1h",
+      "from": "now-6h",
       "to": "now"
     },
     "timepicker": {
+      "now": true,
       "refresh_intervals": [
         "5s",
         "10s",
@@ -1539,14 +1247,7 @@
         "30d"
       ]
     },
-    "templating": {
-      "list": []
-    },
-    "annotations": {
-      "list": []
-    },
-    "schemaVersion": 12,
-    "version": 7,
-    "links": []
+    "timezone": "browser",
+    "version": 7
   }
 }
