@@ -1,0 +1,10 @@
+{
+  "name":"collectd-ecs",
+  "type":"influxdb",
+  "url":"http://influxdb-ecs:8086",
+  "access":"proxy",
+  "basicAuth":true,
+  "basicAuthUser":"root",
+  "basicAuthPassword":"somepassword",
+  "database" : "collectd"
+}

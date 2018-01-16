@@ -1,7 +1,7 @@
 {
-  "name":"collectd",
+  "name":"collectd-scaleio",
   "type":"influxdb",
-  "url":"http://influxdb-ecs:8086",
+  "url":"http://influxdb-scaleio:8087",
   "access":"proxy",
   "basicAuth":true,
   "basicAuthUser":"root",

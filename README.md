@@ -40,8 +40,8 @@ For ECS-influxdb:
 - `types.db` defines the collectd data source and influxdb needs it.
 
 For Grafana:
-- The ECS dashboard is functional, credit Jonas Rosland
-- The ScaleIO dashboard is functional (waiting for datasource), credit swisscom
+- `dashboards/ECS.json` is functional, credit Jonas Rosland
+- `dashboards/SCALEIO.json` is functional (but waiting for a datasource), credit swisscom
 - Other dashboards are placeholders
 
 **After running docker-compose, you can access:**
