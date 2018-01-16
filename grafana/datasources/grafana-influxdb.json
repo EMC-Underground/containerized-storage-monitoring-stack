@@ -1,7 +1,7 @@
 {
   "name":"collectd",
   "type":"influxdb",
-  "url":"http://influxdb:8086",
+  "url":"http://influxdb-ecs:8086",
   "access":"proxy",
   "basicAuth":true,
   "basicAuthUser":"root",

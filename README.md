@@ -13,7 +13,7 @@ The deployment of these supporting apps and code will be containerized and compl
 # How To
 
 ## Usage
-clone this repository and run:
+clone this repository, set up your array IPs & credentials in the respective yml files and then run:
 
 ```
 $ docker-compose up (add -d flag to not show console output of the collectd process)
@@ -21,24 +21,34 @@ $ docker-compose up (add -d flag to not show console output of the collectd proc
 
 
 ## Info
-docker-compose will pull existing images for influxdb and grafana from docker hub: 
+**Grafana runs in a single container and a dashboard is set up for each storage array, with a corresponding datasource.
+Influxdb and Collectd are deployed together in pairs of containers, one pair for each storage array.**
 
-- https://hub.docker.com/_/influxdb/
+`docker-compose` will pull images from docker hub: 
+- https://hub.docker.com/_/influxdb/: used directly
+- https://hub.docker.com/r/grafana/grafana/: Dockerfile adds HTTPie
+- https://hub.docker.com/_/alpine/: Dockerfile installs collectd and associated collector code for the specific array type
 
-- https://hub.docker.com/r/grafana/grafana/
+For ECS-collectd:
+- Put the ECS IP address, user ID and password into `ecs-creds.yml` (from provided template)
+- `collectd.conf` is generic except for:
+	- The Plugin network section sets up collectd to send data to 127.0.0.1 and port 25826
+	- The Plugin exec section that calls `collect-ecs.js`.
 
-docker-compose will then build the collectd container via Dockerfile.
+For ECS-influxdb:
+- `influxdb.conf` is generic, the only change is to enable collectd ('enabled=true')
+- `types.db` defines the collectd data source and influxdb needs it.
 
-- The collectd.conf config file is generic except for 1) the Plugin network part sets up collectd to send data to 127.0.0.1 and port 25826 and 2) the Plugin exec part that calls collect-ecs.js.
+For Grafana:
+- The ECS dashboard is functional, credit Jonas Rosland
+- The ScaleIO dashboard is functional (waiting for datasource), credit swisscom
+- Other dashboards are placeholders
 
-- The influxdb.conf config file is also generic, the only change is to enable collectd ('enabled=true')
-
-- The types.db file defines the collectd data source and influxdb needs it.
-
-After running docker-compose, you can access:
-
+**After running docker-compose, you can access:**
 - The influxdb web admin page at http://localhost:8083
-- Grafana at http://localhost:3000 (login with default admin/admin, and the dashboard will be all set up)
+- Grafana at http://localhost:3000 (login with default admin/admin, and the dashboards will be all set up)
+
+Current status 1/15/18: the ECS dashboard is up and running, other dashboards TBD.
 
 ## Utilities
 The util directory contains some shell scripts that may be useful in dev:
@@ -65,7 +75,7 @@ Isilon: via Insights connector - https://github.com/Isilon/isilon_data_insights_
 
 VPLEX: maybe also a lead on how to proceed via https://community.emc.com/thread/239953?start=0&tstart=0
 
-VMAX: looking to leverage work by Craig Smith & Vijay Kumar - https://github.com/VijayEMC/VMAX-Graphite
+VMAX: looking to leverage work by Vijay Kumar & Craig Smith - https://github.com/VijayEMC/VMAX_UnisphereAPI
 
 VNX/Unity: Integrate work done by Craig Smith at https://github.com/EMC-Underground/vnx-info-collector
 
