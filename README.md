@@ -54,8 +54,9 @@ For SCALEIO-influxdb:
 
 For Grafana:
 - `dashboards/ECS.json` is functional, credit Jonas Rosland
-- `dashboards/SCALEIO.json` is functional (but waiting for a datasource), credit swisscom
+- `dashboards/SCALEIO.json` is waiting for a datasource. When the collector is written, this dashboard JSON definition will be used to display the metrics. Credit swisscom
 - Other dashboards are placeholders
+- `setup.sh` automates the setup of any defined Grafana datasources and dashboards
 
 Other Notes:
 - `types.db` defines how collectd metrics are structured and InfluxDB needs it in order to store them. No customization needed.

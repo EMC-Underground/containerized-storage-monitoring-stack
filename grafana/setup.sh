@@ -1,14 +1,10 @@
 #!/bin/bash
 
-# Taken from https://github.com/grafana/grafana-docker/issues/74
-
+# Adapted from https://github.com/grafana/grafana-docker/issues/74
 # Script to configure grafana datasources and dashboards.
-# Intended to be run before grafana entrypoint...
-# Image: grafana/grafana:4.1.2
-# ENTRYPOINT [\"/run.sh\"]"
+
 
 GRAFANA_URL=${GRAFANA_URL:-http://$GF_SECURITY_ADMIN_USER:$GF_SECURITY_ADMIN_PASSWORD@localhost:3000}
-#GRAFANA_URL=http://grafana-plain.k8s.playground1.aws.ad.zopa.com
 DATASOURCES_PATH=${DATASOURCES_PATH:-/etc/grafana/datasources}
 DASHBOARDS_PATH=${DASHBOARDS_PATH:-/etc/grafana/dashboards}
 
@@ -32,7 +28,7 @@ grafana_api() {
 wait_for_api() {
   while ! grafana_api GET /api/user/preferences
   do
-    echo "setup.sh waiting for API..."
+    echo "setup.sh waiting for Grafana API to be available..."
     sleep 5
   done 
 }
@@ -64,15 +60,12 @@ install_dashboards() {
       echo "Installing dashboard ${dashboard}"
       # use httPie approach, curl approach from original source not working
       http POST http://admin:admin@localhost:3000/api/dashboards/db < ${dashboard}
-      echo ${dashboard##*/}
       dashboard=${dashboard##*/}
-      echo ${dashboard%.json}
       if grafana_api GET /api/dashboards/db/${dashboard%.json}; then
-        echo ${name%.json} " dashboard installation: success"
+        echo ${dashboard%.json} " dashboard installation: success"
       else
-        echo ${name%.json} " dashboard installation: failed"
+        echo ${dashboard%.json} " dashboard installation: failed"
       fi
-
     fi
   done
 }
@@ -83,7 +76,7 @@ configure_grafana() {
   install_dashboards
 }
 
-echo "Running configure_grafana in the background..."
+echo "setup.sh is running configure_grafana in the background..."
 configure_grafana &
 /run.sh
 exit 0
