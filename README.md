@@ -66,6 +66,9 @@ Other Notes:
 
 Current status 1/17/18: the ECS dashboard is up and running, the ScaleIO dashboard is available as a placeholder showing unique data, and the other dashboards are TBD.
 
+The list of available dashboard will look similar to this:
+![Grafana storage dashboards](doc/dashboard-list.png?raw=true "Grafana Storage Dashboards")
+
 The ECS dashboard looks like this:
 ![EMC Elastic Cloud Storage dashboard](doc/ECS_dashboard.jpg?raw=true "EMC ECS Dashboard")
 
