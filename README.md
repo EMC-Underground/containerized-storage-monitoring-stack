@@ -70,7 +70,7 @@ The list of available dashboard will look similar to this:
 ![Grafana storage dashboards](doc/dashboard-list.png?raw=true "Grafana Storage Dashboards")
 
 The ECS dashboard looks like this:
-![EMC Elastic Cloud Storage dashboard](doc/ECS_dashboard.jpg?raw=true "EMC ECS Dashboard")
+![EMC Elastic Cloud Storage dashboard](doc/ECS-dashboard.jpg?raw=true "EMC ECS Dashboard")
 
 ## Utilities
 The util directory contains some shell scripts that may be useful in dev:
