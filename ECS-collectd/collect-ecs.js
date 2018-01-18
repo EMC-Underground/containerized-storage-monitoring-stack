@@ -13,7 +13,7 @@ var parser = new xml2js.Parser();
 var ECSconfig = {};
 
 
-if (fs.existsSync(ecsConfigFile)) { // if the ECS API access token exists
+if (fs.existsSync(ecsConfigFile)) {
 	ECSconfig = YAML.load(ecsConfigFile) // build an object from the yaml file
 	// console.log('ecsConfigFile = ')
 	// console.log(util.inspect(ECSconfig, false, null))
@@ -228,14 +228,6 @@ function getECSConfig (callback) {
 			})
 		}	
 	});	
-}
-
-function writeFileX (filename, contents) {
-	fs.writeFile(filename, contents, function (err) {
-		if (err) {
-			console.log('error writing file: ' + err)
-		} 
-	})
 }
 
 function writeFile (filename, contents) {

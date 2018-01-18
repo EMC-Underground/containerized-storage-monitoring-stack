@@ -4,8 +4,8 @@
 This is a work in progress. The purpose of this project is to build an infrastructure automation use case around the collection and presentation of storage metrics. The approach being taken is to use:
 
 - collectd whenever possible (using exec) and other custom scripts as necessary to gather metrics
-- influxdb to store the metrics as time series data
-- grafana to visualize the metrics
+- InfluxDB to store the metrics as time series data
+- Grafana to visualize the metrics
 
 The deployment of these supporting apps and code will be containerized and completely software defined.
 
@@ -16,13 +16,13 @@ The deployment of these supporting apps and code will be containerized and compl
 clone this repository, set up your array IPs & credentials in the respective yml files and then run:
 
 ```
-$ docker-compose up (add -d flag to not show console output of the collectd process)
+$ docker-compose up
 ```
 
 
 ## Info
 **Grafana runs in a single container and a dashboard is set up for each storage array, with a corresponding datasource.
-Influxdb and Collectd are deployed together in pairs of containers, one pair for each storage array.**
+InfluxDB and collectd are deployed together in pairs of containers, one pair for each storage array.**
 
 `docker-compose` will pull images from docker hub: 
 - https://hub.docker.com/_/influxdb/: used directly
@@ -38,7 +38,7 @@ For ECS-collectd:
 For ECS-influxdb:
 - `influxdb.conf` is the generic conf file, the only change is to enable collectd with `'enabled=true'`
 	- Admin access is configured via `bind-address = ":8083"`
-	- The HTTP API endpoint port is place you go to query influxdb for data, and is configured via `bind-address = ":8086"`
+	- The HTTP API endpoint port is place you go to query InfluxDB for data, and is configured via `bind-address = ":8086"`
 	- It is listening for collectd metrics on UDP port 25826 via `bind-address = ":25826"`
 
 For SCALEIO-collectd:
@@ -48,7 +48,7 @@ For SCALEIO-influxdb:
 - `influxdb.conf` contains the following modifications from the generic conf file:
 	- Enables collectd with `'enabled=true'`
 	- Admin access is configured via `bind-address = ":8084"`
-	- The HTTP API endpoint port is place you go to query influxdb for data, and is configured via `bind-address = ":8087"`
+	- The HTTP API endpoint port is place you go to query InfluxDB for data, and is configured via `bind-address = ":8087"`
 	- It is listening for collectd metrics on UDP port 25827 via `bind-address = ":25827"`
 
 
@@ -58,10 +58,10 @@ For Grafana:
 - Other dashboards are placeholders
 
 Other Notes:
-- `types.db` defines how collectd metrics are structured and influxdb needs it in order to store them. No customization needed.
+- `types.db` defines how collectd metrics are structured and InfluxDB needs it in order to store them. No customization needed.
 
 **After running docker-compose, you can access:**
-- The influxdb web admin page for ECS and ScaleIO at http://localhost:8083 & 8084 respectively
+- The InfluxDB web admin page for ECS and ScaleIO at http://localhost:8083 & 8084 respectively
 - Grafana at http://localhost:3000 (login with default admin/admin, and the dashboards will be all set up)
 
 Current status 1/17/18: the ECS dashboard is up and running, the ScaleIO dashboard is available as a placeholder showing unique data, and the other dashboards are TBD.
@@ -83,7 +83,7 @@ The util directory contains some shell scripts that may be useful in dev:
 # Resources
 
 ## Credits and References
-https://blog.laputa.io/try-influxdb-and-grafana-by-docker-6b4d50c6a446: setup of collectd, influxdb and grafana
+https://blog.laputa.io/try-influxdb-and-grafana-by-docker-6b4d50c6a446: setup of collectd, InfluxDB and Grafana
 https://github.com/jonasrosland/collectd-ecs: prior work getting metrics out of ECS using python
 https://www.emc.com/techpubs/ecs/ecs_api_object_control_service-1.htm: Using the ECS management REST API
 https://oldhenhut.com/2016/09/01/examples-of-ecs-api-usage: ECS API usage via s3curl
